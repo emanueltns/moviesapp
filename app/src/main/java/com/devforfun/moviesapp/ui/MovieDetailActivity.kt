@@ -1,4 +1,4 @@
-package com.devforfun.moviesapp
+package com.devforfun.moviesapp.ui
 
 import android.support.v7.app.AppCompatActivity
 

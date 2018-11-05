@@ -1,32 +1,29 @@
-package com.devforfun.moviesapp
+package com.devforfun.moviesapp.ui
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.squareup.picasso.Picasso
+import com.devforfun.moviesapp.R
+import com.devforfun.moviesapp.api.model.Movie
+import com.devforfun.moviesapp.utils.inflate
+import com.devforfun.moviesapp.utils.loadUrl
 import kotlinx.android.synthetic.main.movies_item.view.*
 
-class MoviesAdapter(val context : Context, val clickListener: (Movie) -> Unit) : RecyclerView.Adapter<ViewHolder>() {
+class MoviesAdapter(private val movies : List<Movie>, private val clickListener: (Movie) -> Unit)
+    : RecyclerView.Adapter<ViewHolder>() {
 
-    var items : ArrayList<Movie> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.movies_item, parent, false))
+        return ViewHolder(parent.inflate(R.layout.movies_item))
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return movies.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items.get(position), clickListener)
-    }
-
-    fun update(items : ArrayList<Movie>) {
-        this.items = items;
+        holder.bind(movies.get(position), clickListener)
     }
 }
 
@@ -35,11 +32,9 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
     val title : TextView = itemView.card_view.movie_title
 
     fun bind(movie: Movie, clickListener : (Movie) -> Unit) {
-        title.text =movie.title
-        val picasso  = Picasso.get()
-        picasso.isLoggingEnabled = true
-        picasso.load(movie.imageUrl)
-                .into(image)
+        title.text = movie.title
+        //TODO find out the url called for getting the image
+        image.loadUrl(movie.posterPath)
         itemView.setOnClickListener{clickListener(movie)}
     }
 }
